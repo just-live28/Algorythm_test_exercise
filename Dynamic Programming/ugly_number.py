@@ -18,5 +18,4 @@ while(len(numbers) < 1000):
     i += 1
 result = sorted(numbers)
 
-print(result)
 print(result[n-1])

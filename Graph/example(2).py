@@ -1,6 +1,7 @@
 #서로소 집합 알고리즘 (find, union)
 # find_parent(parent, x) : x 노드의 부모 노드를 반환
 # union_parent(parent, a, b) : a, b 노드의 각 부모 노드를 구해 부모 노드가 더 작은 노드로 연결
+# 이 때, 만약 parent 노드가 같다면, 사이클이 발생하고 있는 것이다.
 
 def find_parent(parent, x):
     if parent[x] != x:

@@ -27,5 +27,6 @@ while q:
         if indegree[i] == 0:
             q.append(i)
 
-print(result)
+for i in result:
+    print(i, end=' ')
 

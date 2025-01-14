@@ -26,3 +26,4 @@ for i in range(1, n):
         next_5 = ugly[i5] * 5
 
 print(ugly[n-1])
+print(ugly)

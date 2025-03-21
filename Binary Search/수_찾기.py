@@ -7,7 +7,7 @@ m = int(input())
 finds = list(map(int, input().split()))
 
 for find in finds:
-    
+    idx = bisect_left(arr, find)
     if idx == n or (idx == 0 and find != arr[0]):
         print(0)
     else:

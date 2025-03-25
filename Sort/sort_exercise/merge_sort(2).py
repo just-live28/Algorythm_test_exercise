@@ -3,27 +3,28 @@ input = sys.stdin.readline
 
 def merge(st, en):
     mid = (st + en) // 2
-    idx1 = st
-    idx2 = mid
+    pl, pr = st, mid
+    
     for i in range(st, en):
-        if idx1 == mid:
-            tmp[i] = arr[idx2]
-            idx2 += 1
-        elif idx2 == en:
-            tmp[i] = arr[idx1]
-            idx1 += 1
+        if pl == mid:
+            tmp[i] = arr[pr]
+            pr += 1
+        elif pr == en:
+            tmp[i] = arr[pl]
+            pl += 1
         else:
-            if arr[idx1] <= arr[idx2]:
-                tmp[i] = arr[idx1]
-                idx1 += 1
+            if arr[pr] <= arr[pl]:
+                tmp[i] = arr[pr]
+                pr += 1
             else:
-                tmp[i] = arr[idx2]
-                idx2 += 1
+                tmp[i] = arr[pl]
+                pl += 1
+    
     for i in range(st, en):
         arr[i] = tmp[i]
-
+    
 def merge_sort(st, en):
-    if en == st + 1:
+    if en - st == 1:
         return
     
     mid = (st + en) // 2
@@ -38,4 +39,4 @@ for i in range(n):
     arr[i] = int(input())
 merge_sort(0, n)
 for i in range(n):
-    print(arr[i], end=' ')
+    print(arr[i])

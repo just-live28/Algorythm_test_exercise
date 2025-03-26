@@ -1,61 +1,46 @@
 import sys
-from bisect import bisect_right
-
+sys.setrecursionlimit(100000)
 input = sys.stdin.readline
 MX = int(1e9)+1
 
 class CircleNode:
-    def __init__(self, x, r):
-        self.r = r                  # 원의 반지름
-        self.x = x                  # 원의 중심점
-        self.st = x - r             # 원의 시작값
-        self.en = x + r             # 원의 끝값
-        self.children = []          # 자식 CircleNode 리스트
-        self.children_starts = []   # 자식 노드들의 정렬된 시작값 리스트
+    def __init__(self, st, en):
+        self.st = st                # 원의 시작점
+        self.en = en                # 원의 끝점
+        self.dia = en - st          # 원의 지름 
+        self.children = []          # 자식 원 목록
 
-def append_circle(node, x, r):
-    new_st = x - r
-    new_en = x + r
-    children = node.children
-    starts = node.children_starts
-    
-    # 자식 노드 리스트가 비어있지 않다면, 시작점을 기준으로 이진 탐색 진행
-    if children:
-        # new_st보다 작거나 같은 가장 오른쪽 인덱스 찾기
-        idx = bisect_right(starts, new_st) - 1
-        if idx >= 0:
-            candidate = children[idx]
-            if new_en <= candidate.en and r < candidate.r:
-                append_circle(candidate, x, r)
-                return
-    # 적절한 자식이 없으면, 현재 노드 자식으로 새 원 삽입
-    idx = bisect_right(starts, new_st)
-    children.insert(idx, CircleNode(x, r))
-    starts.insert(idx, new_st)
+def append_circle(node):
+    global IDX
+    # 더 이상 삽입할 원이 없거나, 추가할 원이 현재 노드의 자식이 아닌 경우 종료
+    while IDX < n and circles[IDX][1] <= node.en:
+        child = CircleNode(circles[IDX][0], circles[IDX][1])
+        node.children.append(child)
+        IDX += 1
+        append_circle(child)
 
 def cal_area(node):
-    # 자식 원이 없으면 영역 1개
-    if not node.children:    
-        return 1
-    
-    radius_sum = 0
-    count = 1
+    global COUNT
+    # 하나의 원에 대해 영역 추가
+    COUNT += 1
+    # 자식 원들에 대해서 재귀적으로 호출 
+    children_diameter_sum = 0
     for child in node.children:
-        radius_sum += child.r
-        count += cal_area(child)
-    if radius_sum == node.r:
-        count += 1
-    return count
-
+        children_diameter_sum += child.dia
+        cal_area(child)
+    # 자식 원들이 부모 원을 꽉 채우는 경우 영역 추가
+    if children_diameter_sum == node.dia:
+        COUNT += 1
+       
 n = int(input())
 circles = []
 for _ in range(n):
     x, r = map(int, input().split())
-    circles.append((x, r))
-circles.sort(key = lambda x : (-x[1], x[0]))
+    circles.append((x - r, x + r))
+circles.sort(key = lambda x : (x[0], -x[1]))
 
-root = CircleNode(0, MX)
-for x, r in circles:
-    append_circle(root, x, r)
-
-print(cal_area(root))
+root = CircleNode(-MX, MX)
+IDX, COUNT = 0, 0
+append_circle(root)
+cal_area(root)
+print(COUNT)

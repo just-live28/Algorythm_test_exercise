@@ -1,40 +1,41 @@
 import heapq
-import sys
-
-input = sys.stdin.readline
 
 def topology_sort():
+  result = [0] * (n+1)
+  
   q = []
   for i in range(1, n+1):
     if indegree[i] == 0:
-      heapq.heappush(q,-i)
+      heapq.heappush(q, i)
   
-  N = n
+  N = 1
   while q:
-    now = -heapq.heappop(q)
-    answer[now] = N
+    now = heapq.heappop(q)
+    result[now] = N
+    N += 1
     
-    for i in node[now]:
+    for i in graph[now]:
       indegree[i] -= 1
       if indegree[i] == 0:
-        heapq.heappush(q, -i)
-    N -= 1
+        heapq.heappush(q, i)
+  
+  return result
 
 n = int(input())
-node = [[] for _ in range((n+1))]
 indegree = [0] * (n+1)
+graph = [[] for _ in range(n+1)]
+for i in range(1, n+1):
+  line = input()
+  for j in range(1, n+1):
+    if i == j:
+      continue
+    if line[j-1] == '1':
+      indegree[j] += 1
+      graph[i].append(j)
 
-for v in range(1, n+1):
-  temp = [0]+ list(map(int, input().strip()))
-  for i in range(1, n+1):
-    if temp[i] == 1:
-      node[i].append(v)
-      indegree[v] += 1
+result = topology_sort()
 
-answer = [0]*(n+1)
-
-topology_sort()
-if answer.count(0) > 1:
+if result.count(0) > 1:
   print(-1)
 else:
-  print(*answer[1:])
+  print(*result[1:])

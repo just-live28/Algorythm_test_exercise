@@ -21,7 +21,7 @@ for i in range(1, n+1):
 
     line = list(map(int, input().split()))
     for j in range(1, n+1):
-        if j == 1:
+        if line[j-1] == 1:
             union_parent(parent, i, j)
 
 plans = list(map(int, input().split()))

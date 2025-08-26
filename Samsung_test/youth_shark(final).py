@@ -46,7 +46,7 @@ def get_shark_positions(board, sx, sy):
     for i in range(1, 4):
         nx, ny = sx + i * dx[sdir], sy + i * dy[sdir]
 
-        if 0 <= nx < 4 and 0 <= ny < 4 and board[nx][ny] != -1:
+        if 0 <= nx < 4 and 0 <= ny < 4 and board[nx][ny][0] != -1:
             positions.append((nx, ny))
 
     return positions

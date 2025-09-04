@@ -15,10 +15,10 @@ for _ in range(n):
     times.append(t)
     pays.append(p)
 
-d = [0] * 25
+d = [0] * 20
 future_earn = 0
 for i in range(n, 0, -1):
-    if i + times[i] - 1 <= n:
+    if i + times[i] -1 <= n:
         d[i] = max(future_earn, d[i + times[i]] + pays[i])
     else:
         d[i] = future_earn

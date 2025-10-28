@@ -1,0 +1,14 @@
+SELECT Year(SALES_DATE)          AS YEAR,
+       Month(SALES_DATE)         AS MONTH,
+       GENDER,
+       Count(DISTINCT O.USER_ID) AS USERS
+FROM   ONLINE_SALE AS O
+       JOIN USER_INFO AS U
+         ON O.USER_ID = U.USER_ID
+WHERE  GENDER IS NOT NULL
+GROUP  BY YEAR,
+          MONTH,
+          GENDER
+ORDER  BY YEAR,
+          MONTH,
+          GENDER 
